@@ -70,7 +70,7 @@ function handleMessage(sender_psid, received_message) {
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
     response = {
-      text: `You sent the message: "${received_message.text}". Now send me an attachment!`,
+      text: "Chào bạn, bạn muốn xem menu không?",
     };
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
@@ -88,12 +88,12 @@ function handleMessage(sender_psid, received_message) {
               buttons: [
                 {
                   type: "postback",
-                  title: "Yes!",
+                  title: "Có",
                   payload: "yes",
                 },
                 {
                   type: "postback",
-                  title: "No!",
+                  title: "Không",
                   payload: "no",
                 },
               ],
@@ -119,7 +119,7 @@ function handlePostback(sender_psid, received_postback) {
   if (payload === "yes") {
     response = { text: "Thanks!" };
   } else if (payload === "no") {
-    response = { text: "Oops, try sending another image." };
+    response = { text: "Lượn đi cho nước trong bạn êy" };
   }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
