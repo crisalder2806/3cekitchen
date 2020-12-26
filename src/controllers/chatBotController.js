@@ -69,8 +69,30 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
+    // response = {
+    //     text: "Chào bạn, bạn muốn xem menu không?",
+    // };
+
     response = {
-      text: "Chào bạn, bạn muốn xem menu không?",
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "button",
+          text: "Bạn có muốn xem menu không?",
+          buttons: [
+            {
+              type: "postback",
+              title: "Có",
+              payload: "yes",
+            },
+            {
+              type: "postback",
+              title: "Không",
+              payload: "no",
+            },
+          ],
+        },
+      },
     };
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
