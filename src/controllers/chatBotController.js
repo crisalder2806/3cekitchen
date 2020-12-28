@@ -139,28 +139,30 @@ function handlePostback(sender_psid, received_postback, baseUrl) {
 
   // Set the response based on the postback payload
   if (payload === "yes") {
-    let attachment_url = baseUrl + '/images/test.jpg';
-    // response = { text: "Thanks!" };
-    response = {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [
-            {
-              title: "Is this the right picture?",
-              subtitle: "Tap a button to answer.",
-              image_url: attachment_url
-            },
-          ],
-        },
-      },
-    };
+    sendMenu(sender_psid);
   } else if (payload === "no") {
     response = { text: "Lượn đi cho nước trong bạn êy" };
   }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
+}
+
+async function sendMenu(sender_psid) {
+  await callSendAPI(sender_psid, { text: "Bếp gửi bạn menu tuần này để bạn tham khảo ạ" });
+  await callSendAPI(sender_psid, { 
+    "attachment": {
+      "type": "template",
+      "payload": {
+         "template_type": "media",
+         "elements": [
+            {
+               "media_type": "image",
+               "url": "https://www.facebook.com/bep.3ce.danang/photos/pcb.1659856317530533/1659854784197353"
+            }
+         ]
+      }
+    }
+  });
 }
 
 // Sends response messages via the Send API
@@ -173,22 +175,30 @@ function callSendAPI(sender_psid, response) {
     message: response,
   };
 
-  // Send the HTTP request to the Messenger Platform
   request(
     {
       uri: "https://graph.facebook.com/v7.0/me/messages",
       qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
       method: "POST",
       json: request_body,
-    },
-    (err, res, body) => {
-      if (!err) {
-        console.log("message sent!");
-      } else {
-        console.error("Unable to send message:" + err);
-      }
-    }
-  );
+  });
+
+  // Send the HTTP request to the Messenger Platform
+  // request(
+  //   {
+  //     uri: "https://graph.facebook.com/v7.0/me/messages",
+  //     qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+  //     method: "POST",
+  //     json: request_body,
+  //   },
+  //   (err, res, body) => {
+  //     if (!err) {
+  //       console.log("message sent!");
+  //     } else {
+  //       console.error("Unable to send message:" + err);
+  //     }
+  //   }
+  // );
 }
 
 module.exports = {
