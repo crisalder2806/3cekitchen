@@ -139,7 +139,23 @@ function handlePostback(sender_psid, received_postback) {
 
   // Set the response based on the postback payload
   if (payload === "yes") {
+    let attachment_url = req.baseUrl + '/images/test.jpg';
     response = { text: "Thanks!" };
+    response = {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: [
+            {
+              title: "Is this the right picture?",
+              subtitle: "Tap a button to answer.",
+              image_url: attachment_url
+            },
+          ],
+        },
+      },
+    };
   } else if (payload === "no") {
     response = { text: "Lượn đi cho nước trong bạn êy" };
   }
