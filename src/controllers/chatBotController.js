@@ -49,7 +49,7 @@ const postWebhook = (req, res) => {
       if (webhook_event.message) {
         handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
-        handlePostback(sender_psid, webhook_event.postback);
+        handlePostback(sender_psid, webhook_event.postback, req.baseUrl);
       }
     });
 
@@ -131,7 +131,7 @@ function handleMessage(sender_psid, received_message) {
 }
 
 // Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
+function handlePostback(sender_psid, received_postback, baseUrl) {
   let response;
 
   // Get the payload for the postback
@@ -139,8 +139,8 @@ function handlePostback(sender_psid, received_postback) {
 
   // Set the response based on the postback payload
   if (payload === "yes") {
-    let attachment_url = req.baseUrl + '/images/test.jpg';
-    response = { text: "Thanks!" };
+    let attachment_url = baseUrl + '/images/test.jpg';
+    // response = { text: "Thanks!" };
     response = {
       attachment: {
         type: "template",
