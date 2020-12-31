@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 import request from "request";
+import axios from "axios";
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 let firstName, lastName = null;
@@ -33,6 +34,12 @@ const test = (req, res) => {
 
 const retrieveProfile = (psid) => {
   // Retrieve profile
+  return axios.get("https://graph.facebook.com/" + psid), {
+    params: {
+      fields: 'first_name,last_name',
+      access_token: process.env.PAGE_ACCESS_TOKEN
+    }
+  }
   request(
     {
       uri: "https://graph.facebook.com/" + psid,
@@ -47,7 +54,7 @@ const retrieveProfile = (psid) => {
         // Print out the response body
         const res = JSON.parse(body);
         firstName = res.first_name;
-        lastName = res.last_name; 
+        lastName = res.last_name;
       }
     }
   );
@@ -74,7 +81,7 @@ const getWebhook = (req, res) => {
   }
 };
 
-const postWebhook = async (req, res) => {
+const postWebhook = (req, res) => {
   let body = req.body;
 
   // Checks this is an event from a page subscription
@@ -95,8 +102,10 @@ const postWebhook = async (req, res) => {
         handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
         if (webhook_event.postback.payload === 'USER_DEFINED_PAYLOAD') {
-          await retrieveProfile(sender_psid);
-          await handleMessage(sender_psid);
+          retrieveProfile(sender_psid).then(res => {
+            console.log(res, 333);
+            handleMessage(sender_psid);
+          });
         } else {
           handlePostback(sender_psid, webhook_event.postback, req.baseUrl);
         }
