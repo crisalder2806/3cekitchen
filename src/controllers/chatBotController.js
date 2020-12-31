@@ -45,9 +45,10 @@ const retrieveProfile = (psid) => {
     (error, response, body) => {
       if (!error && response.statusCode == 200) {
         // Print out the response body
-        console.log(body.last_name, 1234);
-        firstName = body.first_name;
-        lastName = body.last_name;
+        const res = JSON.parse(body);
+        console.log(res.first_name, 321);
+        firstName = res.first_name;
+        lastName = res.last_name;
       }
     }
   );
