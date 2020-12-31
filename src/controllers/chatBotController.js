@@ -45,7 +45,7 @@ const retrieveProfile = (psid) => {
     (error, response, body) => {
       if (!error && response.statusCode == 200) {
         // Print out the response body
-        console.log(body, 1234);
+        console.log(body.last_name, 1234);
         firstName = body.first_name;
         lastName = body.last_name;
       }
