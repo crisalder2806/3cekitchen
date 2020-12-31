@@ -141,14 +141,19 @@ function handleMessage(sender_psid, received_message) {
         buttons: [
           {
             type: "postback",
-            title: "Báo giá các gói ăn",
+            title: "Xem các gói ăn",
             payload: "pricing",
           },
           {
             type: "postback",
-            title: "Xem menu",
+            title: "Xem menu tuần này",
             payload: "menu",
           },
+          {
+            type: "postback",
+            title: "Tư vấn trực tiếp",
+            payload: "contact"
+          }
         ],
       },
     },
@@ -174,6 +179,47 @@ function handlePostback(sender_psid, received_postback, baseUrl) {
   }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
+}
+
+async function sendMealPlan(sender_psid) {
+  await callSendAPI(sender_psid, {
+    text: "Hiện bếp 3CE có cung cấp 2 gói ăn như sau, bạn bấm vào nút A để hiểu về gói ăn này nhé ạ",
+  });
+
+  const mealPlans = {
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+           {
+            "title":"GÓI HEALTHY/WEIGHT LOSS",
+            "image_url":"https://petersfancybrownhats.com/company_image.png",
+            "subtitle":"Dành cho người giảm cân, ít tập....",
+            "buttons":[
+              {
+                "type":"postback",
+                "title":"TÌM HIỂU THÊM",
+                "payload":"healthyplan"
+              }              
+            ]      
+          },
+          {
+            "title":"GÓI DOUBLE MEAT",
+            "image_url":"https://petersfancybrownhats.com/company_image.png",
+            "subtitle":"Dành cho người siết cơ, tập luyện....",
+            "buttons":[
+              {
+                "type":"postback",
+                "title":"TÌM HIỂU THÊM",
+                "payload":"massplan"
+              }              
+            ]      
+          }
+        ]
+      }
+    }
+  }
 }
 
 async function sendMenu(sender_psid) {
