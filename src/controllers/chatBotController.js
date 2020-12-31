@@ -6,11 +6,9 @@ const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
 const test = (req, res) => {
   var messageData = {
-    get_started: [
-      {
-        payload: "USER_DEFINED_PAYLOAD",
-      },
-    ],
+    get_started: {
+      payload: "USER_DEFINED_PAYLOAD"
+    }
   };
 
   // Start the request
