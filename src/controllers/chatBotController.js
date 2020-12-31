@@ -42,10 +42,10 @@ const retrieveProfile = (psid) => {
       },
       method: "GET"
     },
-    function (error, response, body) {
+    (error, response, body) => {
       if (!error && response.statusCode == 200) {
         // Print out the response body
-        console.log(response, body, 123);
+        console.log(body, 1234);
         firstName = body.first_name;
         lastName = body.last_name;
       }
