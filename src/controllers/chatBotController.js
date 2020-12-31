@@ -21,11 +21,13 @@ const test = (req, res) => {
       method: "POST",
       json: messageData
     },
-    (err, res, body) => {
-      if (!err) {
-        console.log('message sent!')
+    function (error, response, body) {
+      console.log(response);
+      if (!error && response.statusCode == 200) {
+        // Print out the response body
+        res.send(body);
       } else {
-        console.error("Unable to send message:" + err);
+        res.sendStatus(403);
       }
     }
   );
