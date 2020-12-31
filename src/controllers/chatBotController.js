@@ -3,11 +3,12 @@ require("dotenv").config();
 import request from "request";
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+let firstName, lastName;
 
 const test = (req, res) => {
   var messageData = {
     get_started: {
-      payload: "USER_DEFINED_PAYLOAD"
+      payload: "get_started"
     }
   };
 
@@ -20,9 +21,31 @@ const test = (req, res) => {
       json: messageData
     },
     function (error, response, body) {
-      console.log(response);
       if (!error && response.statusCode == 200) {
         // Print out the response body
+        res.send(body);
+      } else {
+        res.sendStatus(403);
+      }
+    }
+  );
+};
+
+const retrieveProfile = (psid) => {
+  // Retrieve profile
+  request(
+    {
+      uri: "https://graph.facebook.com/" + psid,
+      qs: {
+        fields: 'first_name,last_name',
+        access_token: process.env.PAGE_ACCESS_TOKEN 
+      },
+      method: "POST"
+    },
+    function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        // Print out the response body
+        console.log(reponse, body);
         res.send(body);
       } else {
         res.sendStatus(403);
@@ -58,7 +81,7 @@ const postWebhook = (req, res) => {
   // Checks this is an event from a page subscription
   if (body.object === "page") {
     // Iterates over each entry - there may be multiple if batched
-    body.entry.forEach(function (entry) {
+    body.entry.forEach(async function (entry) {
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
       console.log(webhook_event);
@@ -68,11 +91,16 @@ const postWebhook = (req, res) => {
       console.log("Sender PSID: " + sender_psid);
 
       // Check if the event is a message or postback and
-      // pass the event to the appropriate handler function
+      // pass the event tos the appropriate handler function
       if (webhook_event.message) {
         handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
-        handlePostback(sender_psid, webhook_event.postback, req.baseUrl);
+        if (webhook_event.postback.payload === 'get_started') {
+          await retrieveProfile(sender_psid);
+          handleMessage(sender_psid, webhook_event.message);
+        } else {
+          handlePostback(sender_psid, webhook_event.postback, req.baseUrl);
+        }
       }
     });
 
