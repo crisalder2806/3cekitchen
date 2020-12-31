@@ -4,6 +4,7 @@ import request from "request";
 import axios from "axios";
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+const BASE_URL = process.env.BASE_URL;
 let firstName, lastName = null;
 
 const test = (req, res) => {
@@ -107,8 +108,7 @@ const postWebhook = (req, res) => {
             handleMessage(sender_psid);
           });
         } else {
-          console.log(req, 555);
-          handlePostback(sender_psid, webhook_event.postback, req.baseUrl);
+          handlePostback(sender_psid, webhook_event.postback);
         }
       }
     });
@@ -165,7 +165,7 @@ function handleMessage(sender_psid, received_message) {
 }
 
 // Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback, baseUrl) {
+function handlePostback(sender_psid, received_postback) {
   let response;
 
   // Get the payload for the postback
@@ -176,17 +176,16 @@ function handlePostback(sender_psid, received_postback, baseUrl) {
   if (payload === "menu") {
     sendMenu(sender_psid);
   } else if (payload === "mealplan") {
-    sendMealPlan(sender_psid, baseUrl);
+    sendMealPlan(sender_psid);
   }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
 }
 
-async function sendMealPlan(sender_psid, baseUrl) {
+async function sendMealPlan(sender_psid) {
   await callSendAPI(sender_psid, {
     text: "Hiện bếp 3CE có cung cấp 2 gói ăn như sau, bạn bấm vào nút A để hiểu về gói ăn này nhé ạ",
   });
-  console.log(`${baseUrl}/images/healthyplan.jpg`, 111);
 
   const mealPlans = {
     "attachment":{
@@ -196,7 +195,7 @@ async function sendMealPlan(sender_psid, baseUrl) {
         "elements":[
            {
             "title":"GÓI HEALTHY/WEIGHT LOSS",
-            "image_url":`${baseUrl}/images/healthyplan.jpg`,
+            "image_url":`${BASE_URL}/images/healthyplan.jpg`,
             "subtitle":"Dành cho người giảm cân, ít tập....",
             "buttons":[
               {
@@ -208,7 +207,7 @@ async function sendMealPlan(sender_psid, baseUrl) {
           },
           {
             "title":"GÓI DOUBLE MEAT",
-            "image_url":`${baseUrl}/images/massplan.jpg`,
+            "image_url":`${BASE_URL}/images/massplan.jpg`,
             "subtitle":"Dành cho người siết cơ, tập luyện....",
             "buttons":[
               {
