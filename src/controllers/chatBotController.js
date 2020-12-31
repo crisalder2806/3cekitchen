@@ -34,12 +34,12 @@ const test = (req, res) => {
 
 const retrieveProfile = (psid) => {
   // Retrieve profile
-  return axios.get("https://graph.facebook.com/" + psid), {
+  return axios.get("https://graph.facebook.com/" + psid, {
     params: {
       fields: 'first_name,last_name',
       access_token: process.env.PAGE_ACCESS_TOKEN
     }
-  }
+  });
   request(
     {
       uri: "https://graph.facebook.com/" + psid,
@@ -102,8 +102,8 @@ const postWebhook = (req, res) => {
         handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
         if (webhook_event.postback.payload === 'USER_DEFINED_PAYLOAD') {
-          retrieveProfile(sender_psid).then(function(res) {
-            console.log(res, 333);
+          retrieveProfile(sender_psid).then(res => {
+            console.log(res, 222);
             handleMessage(sender_psid);
           });
         } else {
