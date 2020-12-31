@@ -194,7 +194,7 @@ async function sendMealPlan(sender_psid) {
         "elements":[
            {
             "title":"GÓI HEALTHY/WEIGHT LOSS",
-            "image_url":"https://petersfancybrownhats.com/company_image.png",
+            "image_url":`${baseUrl}/images/healthyplan.jpg`,
             "subtitle":"Dành cho người giảm cân, ít tập....",
             "buttons":[
               {
@@ -206,7 +206,7 @@ async function sendMealPlan(sender_psid) {
           },
           {
             "title":"GÓI DOUBLE MEAT",
-            "image_url":"https://petersfancybrownhats.com/company_image.png",
+            "image_url":`${baseUrl}/images/massplan.jpg`,
             "subtitle":"Dành cho người siết cơ, tập luyện....",
             "buttons":[
               {
