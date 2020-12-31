@@ -35,7 +35,7 @@ const retrieveProfile = (psid) => {
   // Retrieve profile
   request(
     {
-      uri: "https://graph.facebook.com/" + psid,
+      uri: "https://graph.facebook.com/v7.0/" + psid,
       qs: {
         fields: 'first_name,last_name',
         access_token: process.env.PAGE_ACCESS_TOKEN 
@@ -46,9 +46,8 @@ const retrieveProfile = (psid) => {
       if (!error && response.statusCode == 200) {
         // Print out the response body
         console.log(reponse, body);
-        res.send(body);
       } else {
-        res.sendStatus(403);
+        console.log(123);
       }
     }
   );
@@ -97,7 +96,7 @@ const postWebhook = (req, res) => {
       } else if (webhook_event.postback) {
         if (webhook_event.postback.payload === 'USER_DEFINED_PAYLOAD') {
           await retrieveProfile(sender_psid);
-          handleMessage(sender_psid, webhook_event.message);
+          handleMessage(sender_psid);
         } else {
           handlePostback(sender_psid, webhook_event.postback, req.baseUrl);
         }
@@ -118,65 +117,35 @@ function handleMessage(sender_psid, received_message) {
 
   // Checks if the message contains text
   if (received_message.text) {
-    // Create the payload for a basic text message, which
-    // will be added to the body of our request to the Send API
     // response = {
     //     text: "Chào bạn, bạn muốn xem menu không?",
     // };
 
-    response = {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "button",
-          text:
-            "Cảm ơn bạn đã nhắn tin cho bếp 3CE, bạn cần tìm hiểu thông tin nào dưới đây ạ?",
-          buttons: [
-            {
-              type: "postback",
-              title: "Báo giá các gói ăn",
-              payload: "pricing",
-            },
-            {
-              type: "postback",
-              title: "Xem menu",
-              payload: "menu",
-            },
-          ],
-        },
-      },
-    };
-  } else if (received_message.attachments) {
-    // Get the URL of the message attachment
-    let attachment_url = received_message.attachments[0].payload.url;
-    response = {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [
-            {
-              title: "Is this the right picture?",
-              subtitle: "Tap a button to answer.",
-              image_url: attachment_url,
-              buttons: [
-                {
-                  type: "postback",
-                  title: "Có",
-                  payload: "yes",
-                },
-                {
-                  type: "postback",
-                  title: "Không",
-                  payload: "no",
-                },
-              ],
-            },
-          ],
-        },
-      },
-    };
+    
   }
+
+  response = {
+    attachment: {
+      type: "template",
+      payload: {
+        template_type: "button",
+        text:
+          "Cảm ơn bạn đã nhắn tin cho bếp 3CE, bạn cần tìm hiểu thông tin nào dưới đây ạ?",
+        buttons: [
+          {
+            type: "postback",
+            title: "Báo giá các gói ăn",
+            payload: "pricing",
+          },
+          {
+            type: "postback",
+            title: "Xem menu",
+            payload: "menu",
+          },
+        ],
+      },
+    },
+  };
 
   // Send the response message
   callSendAPI(sender_psid, response);
