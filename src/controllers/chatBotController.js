@@ -185,6 +185,7 @@ async function sendMealPlan(sender_psid, baseUrl) {
   await callSendAPI(sender_psid, {
     text: "Hiện bếp 3CE có cung cấp 2 gói ăn như sau, bạn bấm vào nút A để hiểu về gói ăn này nhé ạ",
   });
+  console.log(`${baseUrl}/images/healthyplan.jpg`, 111);
 
   const mealPlans = {
     "attachment":{
