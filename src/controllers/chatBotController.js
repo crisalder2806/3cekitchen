@@ -5,7 +5,33 @@ import request from "request";
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
 const test = (req, res) => {
-  return res.send("Hello again");
+  var messageData = {
+    get_started: [
+      {
+        payload: "USER_DEFINED_PAYLOAD",
+      },
+    ],
+  };
+
+  // Start the request
+  request(
+    {
+      url:
+        "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=" +
+        process.env.PAGE_ACCESS_TOKEN,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      form: messageData,
+    },
+    function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        // Print out the response body
+        res.send(body);
+      } else {
+        res.sendStatus(403);
+      }
+    }
+  );
 };
 
 const getWebhook = (req, res) => {
@@ -78,17 +104,18 @@ function handleMessage(sender_psid, received_message) {
         type: "template",
         payload: {
           template_type: "button",
-          text: "Bạn có muốn xem menu không?",
+          text:
+            "Cảm ơn bạn đã nhắn tin cho bếp 3CE, bạn cần tìm hiểu thông tin nào dưới đây ạ?",
           buttons: [
             {
               type: "postback",
-              title: "Có",
-              payload: "yes",
+              title: "Báo giá các gói ăn",
+              payload: "pricing",
             },
             {
               type: "postback",
-              title: "Không",
-              payload: "no",
+              title: "Xem menu",
+              payload: "menu",
             },
           ],
         },
@@ -136,11 +163,12 @@ function handlePostback(sender_psid, received_postback, baseUrl) {
 
   // Get the payload for the postback
   let payload = received_postback.payload;
+  console.log(payload);
 
   // Set the response based on the postback payload
-  if (payload === "yes") {
+  if (payload === "menu") {
     sendMenu(sender_psid);
-  } else if (payload === "no") {
+  } else if (payload === "pricing") {
     response = { text: "Lượn đi cho nước trong bạn êy" };
   }
   // Send the message to acknowledge the postback
@@ -148,20 +176,23 @@ function handlePostback(sender_psid, received_postback, baseUrl) {
 }
 
 async function sendMenu(sender_psid) {
-  await callSendAPI(sender_psid, { text: "Bếp gửi bạn menu tuần này để bạn tham khảo ạ" });
-  await callSendAPI(sender_psid, { 
-    "attachment": {
-      "type": "template",
-      "payload": {
-         "template_type": "media",
-         "elements": [
-            {
-               "media_type": "image",
-               "url": "https://www.facebook.com/bep.3ce.danang/photos/pcb.1659856317530533/1659854784197353"
-            }
-         ]
-      }
-    }
+  await callSendAPI(sender_psid, {
+    text: "Bếp gửi bạn menu tuần này để bạn tham khảo ạ",
+  });
+  await callSendAPI(sender_psid, {
+    attachment: {
+      type: "template",
+      payload: {
+        template_type: "media",
+        elements: [
+          {
+            media_type: "image",
+            url:
+              "https://www.facebook.com/bep.3ce.danang/photos/pcb.1659856317530533/1659854784197353",
+          },
+        ],
+      },
+    },
   });
 }
 
@@ -175,30 +206,12 @@ function callSendAPI(sender_psid, response) {
     message: response,
   };
 
-  request(
-    {
-      uri: "https://graph.facebook.com/v7.0/me/messages",
-      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-      method: "POST",
-      json: request_body,
+  request({
+    uri: "https://graph.facebook.com/v7.0/me/messages",
+    qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+    method: "POST",
+    json: request_body,
   });
-
-  // Send the HTTP request to the Messenger Platform
-  // request(
-  //   {
-  //     uri: "https://graph.facebook.com/v7.0/me/messages",
-  //     qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-  //     method: "POST",
-  //     json: request_body,
-  //   },
-  //   (err, res, body) => {
-  //     if (!err) {
-  //       console.log("message sent!");
-  //     } else {
-  //       console.error("Unable to send message:" + err);
-  //     }
-  //   }
-  // );
 }
 
 module.exports = {
