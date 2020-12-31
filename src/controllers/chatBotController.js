@@ -116,13 +116,11 @@ function handleMessage(sender_psid, received_message) {
   let response;
 
   // Checks if the message contains text
-  if (received_message.text) {
-    // response = {
-    //     text: "Chào bạn, bạn muốn xem menu không?",
-    // };
-
-    
-  }
+  // if (received_message.text) {
+  //   response = {
+  //       text: "Chào bạn, bạn muốn xem menu không?",
+  //   };
+  // }
 
   response = {
     attachment: {
