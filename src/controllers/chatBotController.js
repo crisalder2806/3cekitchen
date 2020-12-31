@@ -3,7 +3,7 @@ require("dotenv").config();
 import request from "request";
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
-let firstName, lastName;
+let firstName, lastName = null;
 
 const test = (req, res) => {
   var messageData = {
@@ -49,6 +49,7 @@ const retrieveProfile = (psid) => {
         console.log(res.first_name, 321);
         firstName = res.first_name;
         lastName = res.last_name;
+        console.log(lastName);
       }
     }
   );
@@ -97,7 +98,8 @@ const postWebhook = (req, res) => {
       } else if (webhook_event.postback) {
         if (webhook_event.postback.payload === 'USER_DEFINED_PAYLOAD') {
           await retrieveProfile(sender_psid);
-          handleMessage(sender_psid);
+          console.log(lastName, 333);
+          await handleMessage(sender_psid);
         } else {
           handlePostback(sender_psid, webhook_event.postback, req.baseUrl);
         }
