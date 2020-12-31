@@ -103,7 +103,7 @@ const postWebhook = (req, res) => {
       } else if (webhook_event.postback) {
         if (webhook_event.postback.payload === 'USER_DEFINED_PAYLOAD') {
           retrieveProfile(sender_psid).then(res => {
-            console.log(res, 222);
+            lastName = res.data.last_name;
             handleMessage(sender_psid);
           });
         } else {
