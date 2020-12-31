@@ -102,7 +102,7 @@ const postWebhook = (req, res) => {
         handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
         if (webhook_event.postback.payload === 'USER_DEFINED_PAYLOAD') {
-          retrieveProfile(sender_psid).then(res => {
+          retrieveProfile(sender_psid).then(function(res) {
             console.log(res, 333);
             handleMessage(sender_psid);
           });
