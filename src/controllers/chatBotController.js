@@ -175,13 +175,13 @@ function handlePostback(sender_psid, received_postback, baseUrl) {
   if (payload === "menu") {
     sendMenu(sender_psid);
   } else if (payload === "mealplan") {
-    sendMealPlan(sender_psid);
+    sendMealPlan(sender_psid, baseUrl);
   }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
 }
 
-async function sendMealPlan(sender_psid) {
+async function sendMealPlan(sender_psid, baseUrl) {
   await callSendAPI(sender_psid, {
     text: "Hiện bếp 3CE có cung cấp 2 gói ăn như sau, bạn bấm vào nút A để hiểu về gói ăn này nhé ạ",
   });
