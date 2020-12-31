@@ -107,6 +107,7 @@ const postWebhook = (req, res) => {
             handleMessage(sender_psid);
           });
         } else {
+          console.log(req, 555);
           handlePostback(sender_psid, webhook_event.postback, req.baseUrl);
         }
       }
