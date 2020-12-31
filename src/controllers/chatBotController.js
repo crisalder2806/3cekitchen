@@ -46,10 +46,8 @@ const retrieveProfile = (psid) => {
       if (!error && response.statusCode == 200) {
         // Print out the response body
         const res = JSON.parse(body);
-        console.log(res.first_name, 321);
         firstName = res.first_name;
-        lastName = res.last_name;
-        console.log(lastName);
+        lastName = res.last_name; 
       }
     }
   );
@@ -76,7 +74,7 @@ const getWebhook = (req, res) => {
   }
 };
 
-const postWebhook = (req, res) => {
+const postWebhook = async (req, res) => {
   let body = req.body;
 
   // Checks this is an event from a page subscription
@@ -98,7 +96,6 @@ const postWebhook = (req, res) => {
       } else if (webhook_event.postback) {
         if (webhook_event.postback.payload === 'USER_DEFINED_PAYLOAD') {
           await retrieveProfile(sender_psid);
-          console.log(lastName, 333);
           await handleMessage(sender_psid);
         } else {
           handlePostback(sender_psid, webhook_event.postback, req.baseUrl);
