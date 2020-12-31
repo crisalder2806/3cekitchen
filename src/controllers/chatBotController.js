@@ -35,12 +35,12 @@ const retrieveProfile = (psid) => {
   // Retrieve profile
   request(
     {
-      uri: "https://graph.facebook.com/v7.0/" + psid,
+      uri: "https://graph.facebook.com/" + psid,
       qs: {
         fields: 'first_name,last_name',
         access_token: process.env.PAGE_ACCESS_TOKEN 
       },
-      method: "POST"
+      method: "GET"
     },
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
