@@ -16,12 +16,10 @@ const test = (req, res) => {
   // Start the request
   request(
     {
-      url:
-        "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=" +
-        process.env.PAGE_ACCESS_TOKEN,
+      uri: "https://graph.facebook.com/v7.0/me/messenger_profile",
+      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      form: messageData,
+      json: messageData
     },
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
