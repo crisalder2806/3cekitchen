@@ -142,7 +142,7 @@ function handleMessage(sender_psid, received_message) {
           {
             type: "postback",
             title: "Xem các gói ăn",
-            payload: "pricing",
+            payload: "mealplan",
           },
           {
             type: "postback",
@@ -174,8 +174,8 @@ function handlePostback(sender_psid, received_postback, baseUrl) {
   // Set the response based on the postback payload
   if (payload === "menu") {
     sendMenu(sender_psid);
-  } else if (payload === "pricing") {
-    response = { text: "Lượn đi cho nước trong bạn êy" };
+  } else if (payload === "mealplan") {
+    sendMealPlan(sender_psid);
   }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
@@ -220,6 +220,8 @@ async function sendMealPlan(sender_psid) {
       }
     }
   }
+
+  await callSendAPI(sender_psid, mealPlans);
 }
 
 async function sendMenu(sender_psid) {
