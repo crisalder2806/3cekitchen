@@ -45,9 +45,9 @@ const retrieveProfile = (psid) => {
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
         // Print out the response body
-        console.log(response, body);
-      } else {
-        console.log(123);
+        console.log(body.first_name, body.last_name, 111);
+        firstName = body.first_name;
+        lastName = body.last_name;
       }
     }
   );
@@ -128,7 +128,7 @@ function handleMessage(sender_psid, received_message) {
       payload: {
         template_type: "button",
         text:
-          "Cảm ơn bạn đã nhắn tin cho bếp 3CE, bạn cần tìm hiểu thông tin nào dưới đây ạ?",
+          `Cảm ơn bạn ${lastName} đã nhắn tin cho bếp 3CE, bạn cần tìm hiểu thông tin nào dưới đây ạ?`,
         buttons: [
           {
             type: "postback",
