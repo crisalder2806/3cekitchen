@@ -8,7 +8,7 @@ let firstName, lastName;
 const test = (req, res) => {
   var messageData = {
     get_started: {
-      payload: "get_started"
+      payload: "USER_DEFINED_PAYLOAD"
     }
   };
 
@@ -95,7 +95,7 @@ const postWebhook = (req, res) => {
       if (webhook_event.message) {
         handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
-        if (webhook_event.postback.payload === 'get_started') {
+        if (webhook_event.postback.payload === 'USER_DEFINED_PAYLOAD') {
           await retrieveProfile(sender_psid);
           handleMessage(sender_psid, webhook_event.message);
         } else {
