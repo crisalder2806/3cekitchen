@@ -8,6 +8,16 @@ const BASE_URL = process.env.BASE_URL;
 let fullName,lastName = null;
 let gender = 'anh/chị';
 
+const weekOfMonth = (date) => {
+  // Copy date so don't affect original
+  var d = new Date(+date);
+  if (isNaN(d)) return;
+  // Move to previous Monday
+  d.setDate(d.getDate() - d.getDay() + 1);
+  // Week number is ceil date/7
+  return Math.ceil(d.getDate()/7);
+}
+
 const test = (req, res) => {
   var messageData = {
     get_started: {
@@ -160,6 +170,8 @@ function handlePostback(sender_psid, received_postback) {
     sendMassPlan(sender_psid);
   } else if (payload === "contact") {
     sendContact(sender_psid);
+  } else if (payload === "menu") {
+    sendMenu(sender_psid);
   }
 }
 
@@ -268,20 +280,15 @@ async function sendMenu(sender_psid) {
   await callSendAPI(sender_psid, {
     text: `Bếp gửi ${gender} menu tuần này để ${gender} tham khảo ạ`,
   });
+  
   await callSendAPI(sender_psid, {
     attachment: {
-      type: "template",
+      type: "image", 
       payload: {
-        template_type: "media",
-        elements: [
-          {
-            media_type: "image",
-            url:
-              "https://www.facebook.com/bep.3ce.danang/photos/pcb.1659856317530533/1659854784197353",
-          },
-        ],
-      },
-    },
+        url: `${BASE_URL}/images/menu/${weekOfMonth(new Date())}.jpg`, 
+        is_reusable: true
+      }
+    }
   });
 }
 
