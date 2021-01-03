@@ -37,7 +37,7 @@ const retrieveProfile = (psid) => {
   // Retrieve profile
   return axios.get("https://graph.facebook.com/" + psid, {
     params: {
-      fields: 'first_name,last_name',
+      fields: 'first_name,last_name,gender',
       access_token: process.env.PAGE_ACCESS_TOKEN
     }
   });
@@ -83,6 +83,7 @@ const postWebhook = (req, res) => {
       // pass the event tos the appropriate handler function
       if (webhook_event.message) {
         retrieveProfile(sender_psid).then(res => {
+          console.log(res.data, 111);
           lastName = res.data.last_name;
           handleMessage(sender_psid);
         });
