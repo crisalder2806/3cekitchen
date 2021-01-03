@@ -162,6 +162,16 @@ function handlePostback(sender_psid, received_postback) {
 
 async function sendHealthyPlan(sender_psid) {
   await callSendAPI(sender_psid, {
+    attachment: {
+      type: "image", 
+      payload: {
+        url: `${BASE_URL}/images/healthyPricing.jpg`, 
+        is_reusable: true
+      }
+    }
+  });
+
+  await callSendAPI(sender_psid, {
     text: "Gói ăn này dành cho những người làm văn phòng, ít có điều kiện tập luyện, hoặc tập luyện với cường độ thấp (2, 3 lần/tuần)."
   });
 
@@ -172,19 +182,19 @@ async function sendHealthyPlan(sender_psid) {
   await callSendAPI(sender_psid, {
     text: "Đây là bảng giá của bên bếp, ngoài ra nếu anh/chị muốn đặt buổi lẻ thì cũng được ạ."
   });
+}
 
+async function sendMassPlan(sender_psid) {
   await callSendAPI(sender_psid, {
     attachment: {
       type: "image", 
       payload: {
-        url: `${BASE_URL}/images/healthyPricing.jpg`, 
+        url: `${BASE_URL}/images/massPricing.jpg`, 
         is_reusable: true
       }
     }
   });
-}
 
-async function sendMassPlan(sender_psid) {
   await callSendAPI(sender_psid, {
     text: "Gói ăn này dành cho dân chuyên gym, người tập lâu năm, có nhu cầu tăng cân, siết cơ..."
   });
@@ -199,16 +209,6 @@ async function sendMassPlan(sender_psid) {
 
   await callSendAPI(sender_psid, {
     text: "Đây là bảng giá của bên bếp, ngoài ra nếu anh/chị muốn đặt buổi lẻ thì cũng được ạ."
-  });
-
-  await callSendAPI(sender_psid, {
-    attachment: {
-      type: "image", 
-      payload: {
-        url: `${BASE_URL}/images/massPricing.jpg`, 
-        is_reusable: true
-      }
-    }
   });
 }
 
@@ -286,13 +286,15 @@ function callSendAPI(sender_psid, response) {
     message: response,
   };
 
-  return axios.post('https://graph.facebook.com/v7.0/me/messages',
-  request_body,
-  {
-    params: {
-      access_token: process.env.PAGE_ACCESS_TOKEN
-    }
-  });
+  setTimeout(() => { 
+    return axios.post('https://graph.facebook.com/v7.0/me/messages',
+    request_body,
+    {
+      params: {
+        access_token: process.env.PAGE_ACCESS_TOKEN
+      }
+    });
+  }, 1000);
 
   // request({
   //   uri: "https://graph.facebook.com/v7.0/me/messages",
