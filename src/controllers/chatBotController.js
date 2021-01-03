@@ -182,21 +182,6 @@ async function sendHealthyPlan(sender_psid) {
       }
     }
   });
-
-  // await callSendAPI(sender_psid, {
-  //   attachment: {
-  //     type: "template",
-  //     payload: {
-  //       template_type: "generic",
-  //       elements: [
-  //         {
-  //           // media_type: "image",
-  //           image_url: `${BASE_URL}/images/healthyPricing.png`
-  //         },
-  //       ],
-  //     },
-  //   },
-  // });
 }
 
 async function sendMassPlan(sender_psid) {
@@ -218,17 +203,12 @@ async function sendMassPlan(sender_psid) {
 
   await callSendAPI(sender_psid, {
     attachment: {
-      type: "template",
+      type: "image", 
       payload: {
-        template_type: "media",
-        elements: [
-          {
-            media_type: "image",
-            url: `${BASE_URL}/images/massPricing.png`
-          },
-        ],
-      },
-    },
+        url: `${BASE_URL}/images/massPricing.jpg`, 
+        is_reusable: true
+      }
+    }
   });
 }
 
@@ -306,12 +286,20 @@ function callSendAPI(sender_psid, response) {
     message: response,
   };
 
-  request({
-    uri: "https://graph.facebook.com/v7.0/me/messages",
-    qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-    method: "POST",
-    json: request_body,
+  return axios.post('https://graph.facebook.com/v7.0/me/messages',
+  request_body,
+  {
+    params: {
+      access_token: process.env.PAGE_ACCESS_TOKEN
+    }
   });
+
+  // request({
+  //   uri: "https://graph.facebook.com/v7.0/me/messages",
+  //   qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+  //   method: "POST",
+  //   json: request_body,
+  // });
 }
 
 module.exports = {
