@@ -84,6 +84,7 @@ const postWebhook = (req, res) => {
       if (webhook_event.message) {
         handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
+        console.log(webhook_event.postback.payload, 111);
         if (webhook_event.postback.payload === 'USER_DEFINED_PAYLOAD') {
           retrieveProfile(sender_psid).then(res => {
             lastName = res.data.last_name;
@@ -156,8 +157,6 @@ function handlePostback(sender_psid, received_postback) {
   } else if (payload === "massplan") {
     sendMassPlan(sender_psid);
   }
-  // Send the message to acknowledge the postback
-  // callSendAPI(sender_psid, response);
 }
 
 async function sendHealthyPlan(sender_psid) {
