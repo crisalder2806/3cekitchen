@@ -145,7 +145,6 @@ function handlePostback(sender_psid, received_postback) {
 
   // Get the payload for the postback
   let payload = received_postback.payload;
-  console.log(payload);
 
   // Set the response based on the postback payload
   if (payload === "menu") {
@@ -158,7 +157,7 @@ function handlePostback(sender_psid, received_postback) {
     sendMassPlan(sender_psid);
   }
   // Send the message to acknowledge the postback
-  callSendAPI(sender_psid, response);
+  // callSendAPI(sender_psid, response);
 }
 
 async function sendHealthyPlan(sender_psid) {
@@ -178,11 +177,11 @@ async function sendHealthyPlan(sender_psid) {
     attachment: {
       type: "template",
       payload: {
-        template_type: "media",
+        template_type: "generic",
         elements: [
           {
-            media_type: "image",
-            url: `${BASE_URL}/images/healthyPricing.png`
+            // media_type: "image",
+            image_url: `${BASE_URL}/images/healthyPricing.png`
           },
         ],
       },
