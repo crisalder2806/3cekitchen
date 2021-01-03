@@ -162,12 +162,12 @@ function handlePostback(sender_psid, received_postback) {
   } else if (payload === "massplan") {
     sendMassPlan(sender_psid);
   } else if (payload === "contact") {
-    sendMassPlan(sender_psid);
+    sendContact(sender_psid);
   }
 }
 
 function sendContact(sendder_psid) {
-  await callSendAPI(sender_psid, {
+  callSendAPI(sender_psid, {
     text: `Chào ${gender} ${lastName}, bếp sẽ nhánh chóng liên hệ lại anh ngay. Trường hợp cần liên lạc ngay ${gender} vui lòng gọi vào SĐT 0936.574.674. Chúc ${gender} một ngày tốt lành.`
   });
 }
