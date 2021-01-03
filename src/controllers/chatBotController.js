@@ -82,9 +82,11 @@ const postWebhook = (req, res) => {
       // Check if the event is a message or postback and
       // pass the event tos the appropriate handler function
       if (webhook_event.message) {
-        handleMessage(sender_psid, webhook_event.message);
+        retrieveProfile(sender_psid).then(res => {
+          lastName = res.data.last_name;
+          handleMessage(sender_psid);
+        });
       } else if (webhook_event.postback) {
-        console.log(webhook_event.postback.payload, 111);
         if (webhook_event.postback.payload === 'USER_DEFINED_PAYLOAD') {
           retrieveProfile(sender_psid).then(res => {
             lastName = res.data.last_name;
