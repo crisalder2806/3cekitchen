@@ -170,7 +170,7 @@ async function sendHealthyPlan(sender_psid) {
       }
     }
   });
-
+  
   await callSendAPI(sender_psid, {
     text: "Gói ăn này dành cho những người làm văn phòng, ít có điều kiện tập luyện, hoặc tập luyện với cường độ thấp (2, 3 lần/tuần)."
   });
@@ -286,15 +286,14 @@ function callSendAPI(sender_psid, response) {
     message: response,
   };
 
-  setTimeout(() => { 
-    return axios.post('https://graph.facebook.com/v7.0/me/messages',
-    request_body,
-    {
-      params: {
-        access_token: process.env.PAGE_ACCESS_TOKEN
-      }
-    });
-  }, 1000);
+  return axios.post('https://graph.facebook.com/v7.0/me/messages',
+  request_body,
+  {
+    params: {
+      access_token: process.env.PAGE_ACCESS_TOKEN
+    },
+    timeout: 1000
+  });
 
   // request({
   //   uri: "https://graph.facebook.com/v7.0/me/messages",
