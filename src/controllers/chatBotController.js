@@ -175,18 +175,28 @@ async function sendHealthyPlan(sender_psid) {
 
   await callSendAPI(sender_psid, {
     attachment: {
-      type: "template",
+      type: "image", 
       payload: {
-        template_type: "generic",
-        elements: [
-          {
-            // media_type: "image",
-            image_url: `${BASE_URL}/images/healthyPricing.png`
-          },
-        ],
-      },
-    },
+        url: `${BASE_URL}/images/healthyPricing.jpg`, 
+        is_reusable: true
+      }
+    }
   });
+
+  // await callSendAPI(sender_psid, {
+  //   attachment: {
+  //     type: "template",
+  //     payload: {
+  //       template_type: "generic",
+  //       elements: [
+  //         {
+  //           // media_type: "image",
+  //           image_url: `${BASE_URL}/images/healthyPricing.png`
+  //         },
+  //       ],
+  //     },
+  //   },
+  // });
 }
 
 async function sendMassPlan(sender_psid) {
