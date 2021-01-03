@@ -41,24 +41,6 @@ const retrieveProfile = (psid) => {
       access_token: process.env.PAGE_ACCESS_TOKEN
     }
   });
-  request(
-    {
-      uri: "https://graph.facebook.com/" + psid,
-      qs: {
-        fields: 'first_name,last_name',
-        access_token: process.env.PAGE_ACCESS_TOKEN 
-      },
-      method: "GET"
-    },
-    (error, response, body) => {
-      if (!error && response.statusCode == 200) {
-        // Print out the response body
-        const res = JSON.parse(body);
-        firstName = res.first_name;
-        lastName = res.last_name;
-      }
-    }
-  );
 };
 
 const getWebhook = (req, res) => {
@@ -125,13 +107,6 @@ const postWebhook = (req, res) => {
 function handleMessage(sender_psid, received_message) {
   let response;
 
-  // Checks if the message contains text
-  // if (received_message.text) {
-  //   response = {
-  //       text: "Chào bạn, bạn muốn xem menu không?",
-  //   };
-  // }
-
   response = {
     attachment: {
       type: "template",
@@ -177,14 +152,78 @@ function handlePostback(sender_psid, received_postback) {
     sendMenu(sender_psid);
   } else if (payload === "mealplan") {
     sendMealPlan(sender_psid);
+  } else if (payload === "healthyplan") {
+    sendHealthyPlan(sender_psid);
   }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
 }
 
+async function sendHealthyPlan(sender_psid) {
+  await callSendAPI(sender_psid, {
+    text: "Gói ăn này dành cho những người làm văn phòng, ít có điều kiện tập luyện, hoặc tập luyện với cường độ thấp (2, 3 lần/tuần)."
+  });
+
+  await callSendAPI(sender_psid, {
+    text: "Ngoài ra nếu anh/chị muốn tăng cơ, giảm mỡ thì gói này cũng rất phù hợp ạ."
+  });
+
+  await callSendAPI(sender_psid, {
+    text: "Đây là bảng giá của bên bếp, ngoài ra nếu anh/chị muốn đặt buổi lẻ thì cũng được ạ."
+  });
+
+  await callSendAPI(sender_psid, {
+    attachment: {
+      type: "template",
+      payload: {
+        template_type: "media",
+        elements: [
+          {
+            media_type: "image",
+            url: `${BASE_URL}/images/healthyPricing.png`
+          },
+        ],
+      },
+    },
+  });
+}
+
+async function sendMassPlan(sender_psid) {
+  await callSendAPI(sender_psid, {
+    text: "Gói ăn này dành cho dân chuyên gym, người tập lâu năm, có nhu cầu tăng cân, siết cơ..."
+  });
+
+  await callSendAPI(sender_psid, {
+    text: "Gói này cũng dành cho những người là vận động viên cần bổ sung số lượng protein lớn"
+  });
+
+  await callSendAPI(sender_psid, {
+    text: "Mỗi phần ăn đều sẽ cung cấp lượng protein hầu như là gấp đôi so với gói Healthy."
+  });
+
+  await callSendAPI(sender_psid, {
+    text: "Đây là bảng giá của bên bếp, ngoài ra nếu anh/chị muốn đặt buổi lẻ thì cũng được ạ."
+  });
+
+  await callSendAPI(sender_psid, {
+    attachment: {
+      type: "template",
+      payload: {
+        template_type: "media",
+        elements: [
+          {
+            media_type: "image",
+            url: `${BASE_URL}/images/massPricing.png`
+          },
+        ],
+      },
+    },
+  });
+}
+
 async function sendMealPlan(sender_psid) {
   await callSendAPI(sender_psid, {
-    text: "Hiện bếp 3CE có cung cấp 2 gói ăn như sau, bạn bấm vào nút A để hiểu về gói ăn này nhé ạ",
+    text: "Hiện bếp 3CE có cung cấp 2 gói ăn như sau, bạn bấm vào nút TÌM HIỂU THÊM để hiểu về gói ăn này nhé ạ",
   });
 
   const mealPlans = {
@@ -196,7 +235,7 @@ async function sendMealPlan(sender_psid) {
            {
             "title":"GÓI HEALTHY/WEIGHT LOSS",
             "image_url":`${BASE_URL}/images/healthyplan.jpg`,
-            "subtitle":"Dành cho người giảm cân, ít tập....",
+            "subtitle":"Dành cho dân văn phòng, ít tập....",
             "buttons":[
               {
                 "type":"postback",
