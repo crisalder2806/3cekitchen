@@ -74,7 +74,6 @@ const postWebhook = (req, res) => {
     body.entry.forEach(async function (entry) {
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
-      console.log(webhook_event);
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
@@ -110,7 +109,7 @@ const postWebhook = (req, res) => {
 };
 
 // Handles messages events
-function handleMessage(sender_psid, received_message) {
+function handleMessage(sender_psid) {
   let response;
 
   response = {
@@ -119,7 +118,7 @@ function handleMessage(sender_psid, received_message) {
       payload: {
         template_type: "button",
         text:
-          `Cảm ơn ${gender} ${lastName} đã nhắn tin cho bếp 3CE, ${gender} cần tìm hiểu thông tin nào dưới đây ạ?`,
+          `Cảm ơn ${gender} ${lastName} đã liên hệ với bếp 3CE, ${gender} cần tìm hiểu thông tin nào dưới đây ạ?`,
         buttons: [
           {
             type: "postback",
@@ -147,8 +146,6 @@ function handleMessage(sender_psid, received_message) {
 
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {
-  let response;
-
   // Get the payload for the postback
   let payload = received_postback.payload;
 
@@ -168,7 +165,7 @@ function handlePostback(sender_psid, received_postback) {
 
 function sendContact(sender_psid) {
   callSendAPI(sender_psid, {
-    text: `Chào ${gender} ${lastName}, bếp sẽ nhánh chóng liên hệ lại anh ngay. Trường hợp cần liên lạc ngay ${gender} vui lòng gọi vào SĐT 0936.574.674. Chúc ${gender} một ngày tốt lành.`
+    text: `Chào ${gender} ${lastName}, bếp sẽ nhanh chóng liên hệ lại. Trường hợp cần liên lạc ngay ${gender} vui lòng gọi vào SĐT 0936.574.674. Chúc ${gender} một ngày tốt lành.`
   });
 }
 
@@ -305,13 +302,6 @@ function callSendAPI(sender_psid, response) {
       access_token: process.env.PAGE_ACCESS_TOKEN
     }
   });
-
-  // request({
-  //   uri: "https://graph.facebook.com/v7.0/me/messages",
-  //   qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-  //   method: "POST",
-  //   json: request_body,
-  // });
 }
 
 module.exports = {
