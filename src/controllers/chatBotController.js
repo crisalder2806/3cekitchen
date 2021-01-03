@@ -5,7 +5,7 @@ import axios from "axios";
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 const BASE_URL = process.env.BASE_URL;
-let lastName = null;
+let fullName,lastName = null;
 let gender = 'anh/chị';
 
 const test = (req, res) => {
@@ -83,14 +83,14 @@ const postWebhook = (req, res) => {
       // pass the event tos the appropriate handler function
       if (webhook_event.message) {
         retrieveProfile(sender_psid).then(res => {
-          lastName = res.data.last_name;
+          lastName = res.data.first_name + ' ' + res.data.last_name;
           gender = res.data.gender === 'male' ? 'anh' : 'chị';
           handleMessage(sender_psid);
         });
       } else if (webhook_event.postback) {
         if (webhook_event.postback.payload === 'USER_DEFINED_PAYLOAD') {
           retrieveProfile(sender_psid).then(res => {
-            lastName = res.data.last_name;
+            lastName = res.data.first_name + ' ' + res.data.last_name;;
             gender = res.data.gender === 'male' ? 'anh' : 'chị';
             handleMessage(sender_psid);
           });
