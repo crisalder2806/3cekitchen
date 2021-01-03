@@ -5,7 +5,7 @@ import axios from "axios";
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 const BASE_URL = process.env.BASE_URL;
-let firstName, lastName, gender = 'anh/chị';
+let lastName = null, gender = 'anh/chị';
 
 const test = (req, res) => {
   var messageData = {
@@ -160,7 +160,15 @@ function handlePostback(sender_psid, received_postback) {
     sendHealthyPlan(sender_psid);
   } else if (payload === "massplan") {
     sendMassPlan(sender_psid);
+  } else if (payload === "contact") {
+    sendMassPlan(sender_psid);
   }
+}
+
+function sendContact(sendder_psid) {
+  await callSendAPI(sender_psid, {
+    text: `Chào ${gender} ${lastName}, bếp sẽ nhánh chóng liên hệ lại anh ngay. Trường hợp cần liên lạc ngay ${gender} vui lòng gọi vào SĐT 0936.574.674. Chúc ${gender} một ngày tốt lành.`
+  });
 }
 
 async function sendHealthyPlan(sender_psid) {
