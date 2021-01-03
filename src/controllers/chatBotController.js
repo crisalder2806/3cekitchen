@@ -154,6 +154,8 @@ function handlePostback(sender_psid, received_postback) {
     sendMealPlan(sender_psid);
   } else if (payload === "healthyplan") {
     sendHealthyPlan(sender_psid);
+  } else if (payload === "massplan") {
+    sendMassPlan(sender_psid);
   }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
