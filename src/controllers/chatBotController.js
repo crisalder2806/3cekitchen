@@ -5,7 +5,8 @@ import axios from "axios";
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 const BASE_URL = process.env.BASE_URL;
-let lastName = null, gender = 'anh/chị';
+let lastName = null;
+let gender = 'anh/chị';
 
 const test = (req, res) => {
   var messageData = {
