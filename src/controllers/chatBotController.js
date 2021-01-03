@@ -283,6 +283,7 @@ function callSendAPI(sender_psid, response) {
     recipient: {
       id: sender_psid,
     },
+    sender_action: "typing_on",
     message: response,
   };
 
@@ -291,8 +292,7 @@ function callSendAPI(sender_psid, response) {
   {
     params: {
       access_token: process.env.PAGE_ACCESS_TOKEN
-    },
-    timeout: 1000
+    }
   });
 
   // request({
