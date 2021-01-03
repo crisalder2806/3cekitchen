@@ -5,7 +5,7 @@ import axios from "axios";
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 const BASE_URL = process.env.BASE_URL;
-let firstName, lastName, gender = null;
+let firstName, lastName, gender = 'anh/chị';
 
 const test = (req, res) => {
   var messageData = {
@@ -118,7 +118,7 @@ function handleMessage(sender_psid, received_message) {
       payload: {
         template_type: "button",
         text:
-          `Cảm ơn ${gender} ${lastName} đã nhắn tin cho bếp 3CE, bạn cần tìm hiểu thông tin nào dưới đây ạ?`,
+          `Cảm ơn ${gender} ${lastName} đã nhắn tin cho bếp 3CE, ${gender} cần tìm hiểu thông tin nào dưới đây ạ?`,
         buttons: [
           {
             type: "postback",
@@ -179,11 +179,11 @@ async function sendHealthyPlan(sender_psid) {
   });
 
   await callSendAPI(sender_psid, {
-    text: "Ngoài ra nếu anh/chị muốn tăng cơ, giảm mỡ thì gói này cũng rất phù hợp ạ."
+    text: `Ngoài ra nếu ${gender} muốn tăng cơ, giảm mỡ thì gói này cũng rất phù hợp ạ.`
   });
 
   await callSendAPI(sender_psid, {
-    text: "Đây là bảng giá của bên bếp, ngoài ra nếu anh/chị muốn đặt buổi lẻ thì cũng được ạ."
+    text: `Đây là bảng giá của bên bếp, ngoài ra nếu ${gender} muốn đặt buổi lẻ thì cũng được ạ.`
   });
 }
 
@@ -211,13 +211,13 @@ async function sendMassPlan(sender_psid) {
   });
 
   await callSendAPI(sender_psid, {
-    text: "Đây là bảng giá của bên bếp, ngoài ra nếu anh/chị muốn đặt buổi lẻ thì cũng được ạ."
+    text: `Đây là bảng giá của bên bếp, ngoài ra nếu ${gender} muốn đặt buổi lẻ thì cũng được ạ.`
   });
 }
 
 async function sendMealPlan(sender_psid) {
   await callSendAPI(sender_psid, {
-    text: "Hiện bếp 3CE có cung cấp 2 gói ăn như sau, bạn bấm vào nút TÌM HIỂU THÊM để hiểu về gói ăn này nhé ạ",
+    text: `Hiện bếp 3CE có cung cấp 2 gói ăn như sau, ${gender} bấm vào nút TÌM HIỂU THÊM để hiểu về gói ăn này nhé ạ`,
   });
 
   const mealPlans = {
@@ -260,7 +260,7 @@ async function sendMealPlan(sender_psid) {
 
 async function sendMenu(sender_psid) {
   await callSendAPI(sender_psid, {
-    text: "Bếp gửi bạn menu tuần này để bạn tham khảo ạ",
+    text: `Bếp gửi ${gender} menu tuần này để ${gender} tham khảo ạ`,
   });
   await callSendAPI(sender_psid, {
     attachment: {
